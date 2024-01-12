@@ -31,6 +31,7 @@ When the above is run the parser should display row by row each product object r
 - count: 129
 
 #### Things to note:
+  - Implement Design Patterns, adhere to OOP principles, incorporate DI (Dependency Injection), and follow SOLID principles where possible in your test submission.
   - New formats could be introduced in the future ie. (json, xml etc).
   - File headings could change in the future.
   - Some files can be very large so watch out for memory usage.
