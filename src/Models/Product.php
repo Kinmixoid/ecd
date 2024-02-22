@@ -2,8 +2,12 @@
 
 namespace Models;
 
+use Traits\Makable;
+
 class Product extends Model
 {
+    use Makable;
+
     public string $make;
     public string $model;
     public string $colour;
