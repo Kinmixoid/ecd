@@ -22,14 +22,19 @@ ParserInterface
 CsvParser
 : Is responseible fore reading CSV data, creating models based on that data, and calculating "counts" for summary report. Additional classes to handle other formats could be added at a later date.
 
+Counter
+: this is a class that is responsible for counting models grouped by provided properties.
+
 Model class
-: This is a base class for all models. Models represent the data that the application works with. This base abstract class has a function to make instances of model classes based on supplied data and a header map.
+: This is a base class for all models.
 
 Products model
 : This is a specific model that represents products. Additional models with different set of properties could be added at a later date.
 
 The application can be run from the command line with the command `php splp.php <input file> <output file>`. For example, `php splp.php products_comma_separated.csv test.csv`.
 
+Makable
+: This is a trait that can be used to make a class "makable". It provides a static method `make` that can be used to create an instance of the class based on supplied data and a header map
 
 ---
 I've also added a test class for Configuration class in tests/ConfigurationTest.php as an exmample, but without 3rd party libraries such as PHPUnit, I'm afraid that writing a testing system from scratch would fall outside of the requirements for this task.

@@ -8,7 +8,8 @@ class App
     private array $data;
     public function __construct(
         private Services\Input $input,
-        private Services\Configuration $configuration
+        private Services\Configuration $configuration,
+        private Services\Counter $counter,
     ) {
     }
 
@@ -59,6 +60,10 @@ class App
         }
 
         // instantiate the parser with given filename and header maps from the config  and return it
-        return new $parserClass($filename, $this->configuration->get("input.formats.$extension.header-maps"));
+        return new $parserClass(
+            $filename,
+            $this->configuration->get("input.formats.$extension.header-maps"),
+            $this->counter
+        );
     }
 }

@@ -3,10 +3,11 @@
 namespace Parsers;
 
 use Models\Model;
+use Services\Counter;
 
 class CsvParser implements ParserInterface
 {
-    public function __construct(private string $filename, private array $headerMaps)
+    public function __construct(private string $filename, private array $headerMaps, private Counter $counter)
     {
     }
     public function parse(string $modelClass, array $summarizeBy): array
@@ -14,28 +15,17 @@ class CsvParser implements ParserInterface
         $handle = fopen($this->filename, "r");
         $headers = fgetcsv($handle);
 
-        $summary = [];
+        $this->counter->reset();
+        $this->counter->setGroupBy($summarizeBy);
+
         while ($data = fgetcsv($handle)) {
             // We'll make a new instance of a model and populate it with the data from the CSV row
             $model = $modelClass::make(array_combine($headers, $data), $this->headerMaps[$modelClass]);
 
-            // Let's generate a hashed key based on the properties we want to summarize by
-            $summaryValues = [];
-            foreach ($summarizeBy as $property) {
-                $summaryValues[] =$model->$property;
-            }
-
-            $summaryKey = md5(implode('|', $summaryValues));
-
-            // Let's increment the summary count for the generated key
-            if (!isset($summary[$summaryKey])) {
-                $summary[$summaryKey] = ['count'=>0, 'values'=>$summaryValues];
-            }
-
-            $summary[$summaryKey]['count']++;
+            $this->counter->count($model);
         }
         fclose($handle);
 
-        return $summary;
+        return $this->counter->getData();
     }
 }
